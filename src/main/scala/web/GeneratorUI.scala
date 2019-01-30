@@ -49,9 +49,6 @@ object GeneratorUI {
     elementValueSignal(textArea, () => textArea.value)
   }
 
-  private lazy val ClearCssClassRegExp =
-    new js.RegExp(raw"""(?:^|\s)has-error(?!\S)""", "g")
-
   // PASSWORD GENERATOR
 
   def setupPasswordGenerator(): Unit = {
