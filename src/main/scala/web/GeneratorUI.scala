@@ -5,7 +5,6 @@ import org.scalajs.dom
 import org.scalajs.dom.html
 import dom.document
 import scala.scalajs.js
-import scala.util.{Failure, Success}
 
 object GeneratorUI {
   def main(args: Array[String]): Unit = {
@@ -63,20 +62,11 @@ object GeneratorUI {
     Signal {
       generatedList.rows = passwordsListSize().toInt
       val passwordList = generatedPasswordList()
+
       import scala.concurrent.ExecutionContext.Implicits.global
-      passwordList.onComplete({
-        case Success(passwords) =>
-          generatedList.textContent = ""
-          passwords.foreach{
-            password =>
-              if (passwords.indexOf(password) == passwords.size-1)
-                generatedList.textContent += password
-              else
-                generatedList.textContent += password + "\n"
-          }
-        case Failure(exception) =>
-          generatedList.textContent += s"An error has occured: ${exception.getMessage}"
-      })
+      for {
+        passwords <- passwordList
+      } generatedList.textContent = passwords.reduce((p1, p2) => p1 + "\n" + p2)
     }
   }
 }
