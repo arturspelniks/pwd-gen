@@ -64,9 +64,7 @@ object GeneratorUI {
       val passwordList = generatedPasswordList()
 
       import scala.concurrent.ExecutionContext.Implicits.global
-      for {
-        passwords <- passwordList
-      } generatedList.textContent = passwords.reduce((p1, p2) => p1 + "\n" + p2)
+      passwordList.foreach(passwords => generatedList.textContent = passwords.reduce((p1, p2) => p1 + "\n" + p2))
     }
   }
 }
